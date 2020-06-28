@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class LoginServiceImpl implements LoginService {
 
     @Autowired
-    private LoginDao loginDao;
+    public LoginDao loginDao;
 
     @Override
     public LoginResultVo login(@NotNull LoginRequsetVo loginRequsetVo) {

@@ -1,0 +1,4 @@
+mysql.dev.username=root
+mysql.dev.url=localhost
+mysql.dev.port=3306
+mysql.dev.env=dev

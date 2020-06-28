@@ -1,0 +1,4 @@
+mysql.prod.username=root
+mysql.prod.url=localhost
+mysql.prod.port=3306
+mysql.prod.env=prod
