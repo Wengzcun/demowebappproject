@@ -21,7 +21,7 @@ public class Main
         LoginController loginController = (LoginController) context.getBean("loginControllerImpl");
         LoginRequsetVo loginRequsetVo = new LoginRequsetVo();
         loginRequsetVo.setUserId("123456789");
-        loginRequsetVo.setPassword("eee123");
+        loginRequsetVo.setPassword("123456");
         LoginResultVo loginResultVo = loginController.login(loginRequsetVo);
         System.out.println(loginResultVo.toString());
     }

@@ -44,4 +44,12 @@ http://www.springframework.org/schema/cache/spring-cache-4.0.xsd">
         <property name="basePackage" value = "com.wzc.interfaces.dao.mapper" />
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
     </bean>
+
+    <!-- 可以创建多个事务管理器，分别给不同的数据源使用 -->
+    <bean id="txManager" class = "org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <!-- 单个txManager时可以设置全局的事务管理器，多个事务管理器可以在@Transactional的参数中指定事务管理器-->
+    <tx:annotation-driven transaction-manager="txManager" />
 </beans>

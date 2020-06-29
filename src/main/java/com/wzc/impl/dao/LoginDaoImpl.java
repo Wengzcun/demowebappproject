@@ -2,12 +2,16 @@ package com.wzc.impl.dao;
 
 import com.wzc.impl.dao.datasource.MySQLProps;
 import com.wzc.interfaces.dao.LoginDao;
+import com.wzc.interfaces.dao.mapper.AuthorInfoMapper;
 import com.wzc.interfaces.dao.mapper.UserInfoMapper;
 import com.wzc.model.dao.LoginRequestDto;
 import com.wzc.model.dao.LoginResultDto;
+import com.wzc.model.enumclass.AuthorType;
+import com.wzc.model.mapper.AuthorInfoDo;
 import com.wzc.model.mapper.UserInfoDo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -22,6 +26,11 @@ public class LoginDaoImpl implements LoginDao {
     @Autowired
     private UserInfoMapper userInfoMapper;
 
+    @Autowired
+    private AuthorInfoMapper authorInfoMapper;
+
+
+    @Transactional
     @Override
     public LoginResultDto queryUserInfo(LoginRequestDto requestDto) {
 
@@ -31,13 +40,25 @@ public class LoginDaoImpl implements LoginDao {
         if(requestDto != null){
             if(!StringUtils.isEmpty(requestDto.getUserId()) && !StringUtils.isEmpty(requestDto.getPassword())) {
 
+                //check author info
+                AuthorInfoDo authorInfoRequest = new AuthorInfoDo();
+                authorInfoRequest.setUserId(requestDto.getUserId());
+                authorInfoRequest.setPassword(requestDto.getPassword());
+                authorInfoRequest.setAuthorType(AuthorType.LOGIN.getAuthorType());
+
+                AuthorInfoDo authorInfoResult = authorInfoMapper.getAuthorInfo(authorInfoRequest);
+                if(authorInfoResult == null){
+                    return null;
+                }
+
+                //query user information
                 UserInfoDo userInfoDo = new UserInfoDo();
                 userInfoDo.setUserId(requestDto.getUserId());
-                List<UserInfoDo> userInfoDoList = userInfoMapper.getUserInfos(userInfoDo);
-                if(!CollectionUtils.isEmpty(userInfoDoList)){
-                    loginResultDto.setUserId(userInfoDoList.get(0).getUserId());
-                    loginResultDto.setUserName(userInfoDoList.get(0).getUserName());
-                    loginResultDto.setUniversalId(userInfoDoList.get(0).getUniversalId());
+                UserInfoDo userInfoResult = userInfoMapper.getUserInfo(userInfoDo);
+                if(userInfoResult != null){
+                    loginResultDto.setUserId(userInfoResult.getUserId());
+                    loginResultDto.setUserName(userInfoResult.getUserName());
+                    loginResultDto.setUniversalId(userInfoResult.getUniversalId());
                     return loginResultDto;
                 }
             }
