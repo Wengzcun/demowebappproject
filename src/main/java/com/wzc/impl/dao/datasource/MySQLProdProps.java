@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Profile("prod")
-@Component
+@Component("mySQLProps")
 public class MySQLProdProps implements MySQLProps{
 
     @Value("${mysql.prod.userName}")

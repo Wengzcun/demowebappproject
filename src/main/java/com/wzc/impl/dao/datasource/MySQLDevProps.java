@@ -1,6 +1,7 @@
 package com.wzc.impl.dao.datasource;
 
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
@@ -9,7 +10,8 @@ import org.springframework.stereotype.Component;
 @Data
 @Profile({"dev","default"})
 @PropertySource("classpath:property/mysqlDev")
-@Component
+//PropertySource作用读取mysqlDev信息，并将配置信息加载到Spring的Environment中(import org.springframework.core.env.Environment)
+@Component("mySQLProps")
 public class MySQLDevProps implements MySQLProps{
 
 
